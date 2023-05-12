@@ -3,6 +3,7 @@
   <div class="busca">
     <input
       type="search"
+      (keyup.enter)="buscarLivros()"
       [(ngModel)]="campoBusca"
     >
     <button (click)="buscarLivros()" >
