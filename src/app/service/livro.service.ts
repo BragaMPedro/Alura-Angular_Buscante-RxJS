@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { LivrosResponse } from '../models/interfaces';
+import { Observable, map, tap } from 'rxjs';
+import { Item, LivrosResponse } from '../models/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,12 @@ export class LivroService {
 
   constructor(private http: HttpClient) { }
 
-  buscar(valorDigitado: string): Observable<LivrosResponse> {
+  buscar(valorDigitado: string): Observable<Item[]> {
     const params = new HttpParams().append('q', valorDigitado);
-    return this.http.get(this.API, { params });
+    return this.http.get<LivrosResponse>(this.API, { params }).pipe(
+      tap(res => console.log("Fluxo do tap",res)),
+      map(res => res.items),
+      tap(res => console.log("Fluxo após map",res)),
+    );
   }
 }
